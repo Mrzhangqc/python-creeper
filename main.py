@@ -77,15 +77,23 @@ def exportIpDataFile(soup):
 
     head = ["IP", "端口", "密码", "加密", "协议", "混淆"]
     for i in range(len(head)):
+        # 设置单元格宽度(12pt * 13个)
+        ws.col(i).width = 12 * 20 * 13
         ws.write(0, i, head[i])
 
+    skip = False
     for lineNum in range(dataLen):
         tr = trData[lineNum]
         cols = tr.find_all("td")
+        if skip:
+            continue
+
         for colNum in range(len(cols)):
             if colNum > 0:
                 tdText = cols[colNum].get_text()
-
+                if colNum == 1:
+                    code = os.system("ping -w 1 {ip}".format(ip=tdText))
+                    skip = False if code == 0 else True
                 ws.write(lineNum + 1, colNum - 1, tdText)
 
     wb.save(file)
