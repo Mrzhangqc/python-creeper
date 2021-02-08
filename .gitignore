@@ -1,0 +1,5 @@
+__pycache__
+.vscode
+
+# 工程文件
+python.code-workspace
