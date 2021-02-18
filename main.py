@@ -13,15 +13,17 @@ import xlwt
 # from urllib.parse import parse_qs
 # from wsgiref.simple_server import make_server
 
-
-destop_path = "d:\\Users\\admin\\Desktop\\"
-path = os.path.split(__file__)
+# 导出文件路径
+export_file_path = "d:\\Users\\admin\\Desktop\\"
+# wkhtmltopdf.exe安装路径
+## 不同平台下载参考https://wkhtmltopdf.org/downloads.html
+wkhtmltoimage_binary_path = r"H:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe"
 
 
 def exportSSRDataFile(soup):
     data = soup.select("#main > article > div > table > tbody > tr > td.v2ray > a")
     if data:
-        f = open(str(destop_path) + "ssr.txt", "w+")
+        f = open(str(export_file_path) + "ssr.txt", "w+")
         for label in data:
             f.write(label["data"] + "\n  ")
         f.close()
@@ -46,10 +48,8 @@ def exportSSImage(soup):
     """
     ).format(tableString=tableData)
 
-    output_file = destop_path + "screenshot.png"
-    config = imgkit.config(
-        wkhtmltoimage=r"H:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe"
-    )
+    output_file = export_file_path + "screenshot.png"
+    config = imgkit.config(wkhtmltoimage=wkhtmltoimage_binary_path)
 
     try:
         exist_file = os.path.exists(output_file)
@@ -68,7 +68,7 @@ def exportIpDataFile(soup):
     if dataLen < 1:
         return ""
 
-    file = destop_path + "server-list.xls"
+    file = export_file_path + "server-list.xls"
     if os.path.exists(file):
         os.remove(file)
 
@@ -89,12 +89,14 @@ def exportIpDataFile(soup):
             continue
 
         for colNum in range(len(cols)):
-            if colNum > 0:
-                tdText = cols[colNum].get_text()
-                if colNum == 1:
-                    code = os.system("ping -w 1 {ip}".format(ip=tdText))
-                    skip = False if code == 0 else True
-                ws.write(lineNum + 1, colNum - 1, tdText)
+            if colNum == 0:
+                continue
+
+            tdText = cols[colNum].get_text()
+            if colNum == 1:
+                code = os.system("ping -w 1 {ip}".format(ip=tdText))
+                skip = False if code == 0 else True
+            ws.write(lineNum + 1, colNum - 1, tdText)
 
     wb.save(file)
     print("翻墙服务器列表, 导出成功!")
@@ -149,11 +151,7 @@ def getDataByType(t="ssr"):
 
 if __name__ == "__main__":
     argv = sys.argv
-    t = ""
-    if len(argv) > 1:
-        t = argv[1]
-    else:
-        t = "-t=ssr"
+    t = argv[1] if len(argv) > 1 else t = "-t=ssr"
     getDataByType(t)
 
 ##接口参数
