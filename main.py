@@ -152,7 +152,7 @@ def getDataByType(t="ssr"):
 
 if __name__ == "__main__":
     argv = sys.argv
-    t = argv[2] if len(argv) > 2 else "ssr"
+    t = argv[1] if len(argv) > 1 else "ssr"
     getDataByType(t)
 
 ##接口参数
