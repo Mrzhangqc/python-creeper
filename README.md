@@ -10,6 +10,9 @@ python 爬虫免费翻墙服务器
 - 需要使用到的库已经放在requirements.txt，使用pip安装的可以使用指令:  
 `pip install -r requirements.txt`
 
+- Mac OS 检查依赖包是否安装，可执行安装  
+`brew install libxml2 libxslt`
+
 ## Usage
 
 - 配置导出路径： `export_file_path`
