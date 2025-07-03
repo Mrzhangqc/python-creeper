@@ -14,27 +14,26 @@ import xlwt
 # from wsgiref.simple_server import make_server
 
 # 导出文件路径
-export_file_path = "d:\\Users\\admin\\Desktop\\"
+export_file_path = "/Users/Downloads/download"
 # wkhtmltopdf.exe安装路径
 ## 不同平台下载参考https://wkhtmltopdf.org/downloads.html
-wkhtmltoimage_binary_path = r"H:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe"
+wkhtmltoimage_binary_path = r"/usr/local/bin/wkhtmltoimage"
 
 
 def exportSSRDataFile(soup):
-    data = soup.select("#main > article > div > table > tbody > tr > td.v2ray > a")
+    data = soup.select("#content #primary .cs-entry__wrap > .cs-entry__container  .entry-content > pre")
     if data:
-        f = open(str(export_file_path) + "ssr.txt", "w+")
-        for label in data:
-            f.write(label["data"] + "\n  ")
+        f = open(str(export_file_path) + "network-ssr.txt", "w+")
+        f.write(data[0].text + "\n  ")
         f.close()
-        print("导出文件到桌面文件ssr.txt")
+        print("导出文件到{}, 目录文件network-ssr.txt".format(export_file_path))
         print("获取数据完成!")
     else:
         print("暂无数据")
 
 
 def exportSSImage(soup):
-    tableData = soup.select("#main > article > div > table")
+    tableData = soup.select("#content #primary .cs-entry__wrap > .cs-entry__container  .entry-content > pre")
 
     html_string = (
         """
@@ -58,6 +57,7 @@ def exportSSImage(soup):
 
         imgkit.from_string(html_string, output_file, config=config)
         print("截图成功")
+        print("截图文件路径: {}".format(output_file))
     except IOError as e:
         print("截图失败:", e)
 

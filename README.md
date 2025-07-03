@@ -8,7 +8,7 @@ python 爬虫免费翻墙服务器
 ## 第三方库
 
 - 需要使用到的库已经放在requirements.txt，使用pip安装的可以使用指令:  
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 - Mac OS 检查依赖包是否安装，可执行安装  
 `brew install libxml2 libxslt`
@@ -21,10 +21,10 @@ python 爬虫免费翻墙服务器
 
 - 开始之前检测代理是否已开启，开启代理后使用指令:  
 
-`导出ssr文件：py main.py -t=ssr`  
+`导出ssr文件：python3 main.py -t=ssr`  
 
-`导出截图：py main.py -t=img`  
+`导出截图：python3 main.py -t=img`  
 
-`导出可用服务器文件：py main.py -t=ip`  
+`导出可用服务器文件：python3 main.py -t=ip`  
 
 
